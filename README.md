@@ -1,3 +1,7 @@
+<img alt="Roblox1" src="https://github.com/US-USA/Arabscript/blob/master/RobloxScreenShot20250210_010228465.png" style="height: 250px; width: 350px;">
+
+<img alt="Roblox2" src="https://github.com/US-USA/Arabscript/blob/master/RobloxScreenShot20250210_010334222.png" style="height: 250px; width: 350px;">
+
 # 1 Btn clear Glass
 # 2 Btn Auto Spin
 # else Stop Spin
