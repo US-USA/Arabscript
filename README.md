@@ -1,3 +1,6 @@
+# 1 Btn clear Glass
+# 2 Btn Auto Spin
+# else Stop Spin
 # impossible squid glass Bridge IN ARABIC SCRIPT:
 ```
 loadstring(game:HttpGet("https://raw.githubusercontent.com/US-USA/Arab-script_Roblox-/refs/heads/master/Arabic"))()
