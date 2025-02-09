@@ -1,0 +1,161 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+-- Events
+local ClaimDailySpin = ReplicatedStorage:WaitForChild("ReplicatedEvents"):WaitForChild("ClaimDailySpin")
+
+-- GUI Setup
+local playerGui = Instance.new("ScreenGui")
+playerGui.Name = "GUI ME"
+playerGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Function to create UIStroke and UICorner
+local function applyUIEffects(object)
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = object
+
+    local UIStroke = Instance.new("UIStroke")
+    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    UIStroke.LineJoinMode = Enum.LineJoinMode.Round
+    UIStroke.Thickness = 5
+    UIStroke.Transparency = 0
+    UIStroke.Parent = object
+end
+
+-- Open GUI Button
+local OPENGUIBTN = Instance.new("TextButton")
+OPENGUIBTN.Size = UDim2.new(0, 81, 0, 25)
+OPENGUIBTN.Position = UDim2.new(0.444, 0, 0.207, 0)
+OPENGUIBTN.TextColor3 = Color3.fromRGB(255, 255, 255)
+OPENGUIBTN.BackgroundColor3 = Color3.fromRGB(220, 0, 0)
+OPENGUIBTN.Font = Enum.Font.FredokaOne
+OPENGUIBTN.TextScaled = true
+OPENGUIBTN.Visible = false
+OPENGUIBTN.Name = "OPENGUIBTN"
+OPENGUIBTN.Text = "OPEN GUI"
+OPENGUIBTN.Parent = playerGui
+
+applyUIEffects(OPENGUIBTN)
+
+-- Frame
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 181, 0, 186)
+Frame.Position = UDim2.new(0.384, 0, 0.307, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(207, 9, 9)
+Frame.BackgroundTransparency = 0.1
+Frame.Name = "BYME"
+Frame.Parent = playerGui
+
+applyUIEffects(Frame)
+
+-- Close Button
+local closebtn = Instance.new("TextButton")
+closebtn.Size = UDim2.new(0, 81, 0, 25)
+closebtn.Position = UDim2.new(0.274, 0, 0.073, 0)
+closebtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closebtn.BackgroundColor3 = Color3.fromRGB(220, 0, 0)
+closebtn.Font = Enum.Font.FredokaOne
+closebtn.TextScaled = true
+closebtn.Name = "closebtn"
+closebtn.Text = "CLOSE"
+closebtn.Parent = Frame
+
+applyUIEffects(closebtn)
+
+-- Clear Glass Button
+local clearGlass = Instance.new("TextButton")
+clearGlass.Size = UDim2.new(0, 155, 0, 29)
+clearGlass.Position = UDim2.new(0.08, 0, 0.361, 0)
+clearGlass.TextColor3 = Color3.fromRGB(255, 255, 255)
+clearGlass.BackgroundColor3 = Color3.fromRGB(70, 0, 220)
+clearGlass.Font = Enum.Font.FredokaOne
+clearGlass.TextScaled = true
+clearGlass.Name = "clearGlass"
+clearGlass.Text = "Clear Glass"
+clearGlass.Parent = Frame
+
+applyUIEffects(clearGlass)
+
+-- Auto Spin Button
+local autospinbtn = Instance.new("TextButton")
+autospinbtn.Size = UDim2.new(0, 155, 0, 29)
+autospinbtn.Position = UDim2.new(0.069, 0, 0.664, 0)
+autospinbtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+autospinbtn.BackgroundColor3 = Color3.fromRGB(208, 100, 212)
+autospinbtn.Font = Enum.Font.FredokaOne
+autospinbtn.TextScaled = true
+autospinbtn.Name = "AUTOSPIN"
+autospinbtn.Text = "AUTO SPIN"
+autospinbtn.Parent = Frame
+
+applyUIEffects(autospinbtn)
+
+-- Toggle for Auto Spin
+local spinning = false
+
+local function autoSpin()
+    spinning = not spinning -- Toggle state
+    if spinning then
+        autospinbtn.Text = "STOP SPIN"
+        while spinning do
+            ClaimDailySpin:FireServer()
+            task.wait(0.1)
+        end
+    else
+        autospinbtn.Text = "AUTO SPIN"
+    end
+end
+
+autospinbtn.MouseButton1Click:Connect(autoSpin)
+
+-- Clear Glass Function
+local function clearGlassFunc()
+    local breakable = game.Workspace:FindFirstChild("Breakable")
+    if breakable then
+        breakable:Destroy()
+    end
+end
+
+clearGlass.MouseButton1Click:Connect(clearGlassFunc)
+
+-- GUI Dragging
+local dragging = false
+local dragStart, startPos
+
+Frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = Frame.Position
+    end
+end)
+
+Frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        Frame.Position = UDim2.new(
+            startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+-- Open & Close GUI
+closebtn.MouseButton1Click:Connect(function()
+    Frame.Visible = false
+    OPENGUIBTN.Visible = true
+end)
+
+OPENGUIBTN.MouseButton1Click:Connect(function()
+    Frame.Visible = true
+    OPENGUIBTN.Visible = false
+end)
