@@ -10,6 +10,7 @@ local ClaimDailySpin = ReplicatedStorage:WaitForChild("ReplicatedEvents"):WaitFo
 local playerGui = Instance.new("ScreenGui")
 playerGui.Name = "GUI ME"
 playerGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+playerGui.ResetOnSpawn = false
 
 -- Function to create UIStroke and UICorner
 local function applyUIEffects(object)
