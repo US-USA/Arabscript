@@ -74,8 +74,8 @@ clearGlass.TextColor3 = Color3.fromRGB(255, 255, 255)
 clearGlass.BackgroundColor3 = Color3.fromRGB(70, 0, 220)
 clearGlass.Font = Enum.Font.FredokaOne
 clearGlass.TextScaled = true
-clearGlass.Name = "clearGlass"
-clearGlass.Text = "Clear Glass"
+clearGlass.Name = "revealGlass"
+clearGlass.Text = "Reveal Glass"
 clearGlass.Parent = Frame
 
 applyUIEffects(clearGlass)
