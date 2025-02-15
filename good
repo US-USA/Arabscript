@@ -1,0 +1,20 @@
+for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) do
+    if v:IsA("BasePart") then
+        v.Touched:Connect(function(hit)
+            local character = hit.Parent
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+            if humanoid then
+                -- If the player is dead, do nothing
+                if humanoid.Health == 0 then
+                    return
+                end
+                
+                -- If the player is alive, change color
+                v.Color = Color3.fromRGB(0, 255, 0) 
+            end
+        end)
+    end
+end
+
+print(true)
