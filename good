@@ -1,5 +1,8 @@
 for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) do
     if v:IsA("BasePart") then
+        -- Create a flag to track if the part's color has changed
+        local colorChanged = false  
+
         v.Touched:Connect(function(hit)
             local character = hit.Parent
             local humanoid = character and character:FindFirstChildOfClass("Humanoid")
@@ -10,11 +13,12 @@ for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) d
                     return
                 end
                 
-                -- If the player is alive, change color
-                v.Color = Color3.fromRGB(0, 255, 0) 
+                -- If color has not changed before, change it and lock it
+                if not colorChanged then
+                    v.Color = Color3.fromRGB(0, 255, 0)  -- Change to green permanently
+                    colorChanged = true  -- Lock the color
+                end
             end
         end)
     end
 end
-
-print(true)
