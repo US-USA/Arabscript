@@ -1,3 +1,91 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextButton = Instance.new("TextButton")
+local TextButton_2 = Instance.new("TextButton")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1.000
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.786354065, 0, 0.345513761, 0)
+Frame.Size = UDim2.new(0, 140, 0, 75)
+
+TextButton.Parent = Frame
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.BorderSizePixel = 0
+TextButton.Position = UDim2.new(0.100000001, 0, 0, 0)
+TextButton.Size = UDim2.new(0, 112, 0, 29)
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Text = "delete part"
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextSize = 14.000
+
+TextButton_2.Parent = Frame
+TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.BorderSizePixel = 0
+TextButton_2.Position = UDim2.new(0.100000001, 0, 0.479999989, 0)
+TextButton_2.Size = UDim2.new(0, 112, 0, 29)
+TextButton_2.Font = Enum.Font.SourceSans
+TextButton_2.Text = "add part"
+TextButton_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.TextSize = 14.000
+
+-- Scripts:
+
+local function NBWAKNQ_fake_script() -- TextButton.LocalScript 
+	local script = Instance.new('LocalScript', TextButton)
+
+	local function clearGlass()
+		while true do
+			game.Workspace.delete:Destroy()
+			end
+	end
+	
+	script.Parent.MouseButton1Click:Connect(clearGlass)
+	
+	
+end
+coroutine.wrap(NBWAKNQ_fake_script)()
+local function KUDARSS_fake_script() -- TextButton_2.LocalScript 
+	local script = Instance.new('LocalScript', TextButton_2)
+
+	local button = script.Parent
+	
+	button.MouseButton1Click:Connect(function()
+		local character = game.Players.LocalPlayer.Character
+		if character then
+			local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+			if humanoidRootPart then
+				local redpart = Instance.new("Part")
+				redpart.Parent = game.Workspace
+				redpart.Name = "delete"
+				redpart.Anchored = true
+				redpart.CanCollide = false
+				redpart.Color = Color3.fromRGB(0, 255, 0) -- Green color
+				redpart.Size = Vector3.new(5, 0, 5)
+				redpart.Position = humanoidRootPart.Position - Vector3.new(0, 3, 0) -- Spawn below the player
+			end
+		end
+	end)
+	
+end
+coroutine.wrap(KUDARSS_fake_script)()
+local function UYTOHYU_fake_script() -- ScreenGui.LocalScript 
+	local script = Instance.new('LocalScript', ScreenGui)
+
+	script.Parent.ResetOnSpawn = false
+end
+coroutine.wrap(UYTOHYU_fake_script)()
+
+
 for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) do
     if v:IsA("BasePart") then
         -- Create a flag to track if the part's color has changed
@@ -12,13 +100,14 @@ for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) d
                 if humanoid.Health == 0 then
                     return
                 end
-                
-                -- If color has not changed before, change it and lock it
+                v.Color = Color3.fromRGB(0, 255, 0) 
+    
                 if not colorChanged then
-                    v.Color = Color3.fromRGB(0, 255, 0)  -- Change to green permanently
-                    colorChanged = true  -- Lock the color
+                    v.Color = Color3.fromRGB(0, 255, 0)  
+                    colorChanged = true 
                 end
             end
+            v.Color = Color3.fromRGB(0, 255, 0) 
         end)
     end
 end
