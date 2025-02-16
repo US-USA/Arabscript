@@ -1,105 +1,35 @@
-local UserInputService = game:GetService("UserInputService")
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
 
--- GUI Setup
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
-local AddButton = Instance.new("TextButton")
-local DeleteButton = Instance.new("TextButton")
+local glassModel = Workspace:FindFirstChild("GlassModel")
+local notifEvent = ReplicatedStorage.Remotes:FindFirstChild("Notif")
 
-ScreenGui.Parent = player:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
-
-Frame.Parent = ScreenGui
-Frame.BackgroundTransparency = 1
-Frame.Position = UDim2.new(0.8, 0, 0.4, 0)
-Frame.Size = UDim2.new(0, 140, 0, 75)
-
-AddButton.Parent = Frame
-AddButton.Size = UDim2.new(0, 112, 0, 29)
-AddButton.Position = UDim2.new(0.1, 0, 0, 0)
-AddButton.Text = "Add Part"
-
-DeleteButton.Parent = Frame
-DeleteButton.Size = UDim2.new(0, 112, 0, 29)
-DeleteButton.Position = UDim2.new(0.1, 0, 0.5, 0)
-DeleteButton.Text = "Delete Part"
-
-local function createPart()
-	
-		local part = Instance.new("Part")
-		part.Name = "delete"
-		part.Parent = game.Workspace
-		part.Anchored = true
-		part.CanCollide = false
-		part.Color = Color3.fromRGB(0, 255, 0) -- Green
-		part.Size = Vector3.new(5, 0, 5)
-		part.Position = humanoidRootPart.Position - Vector3.new(0, 3, 0)
-	end
-
-local function deletePart()
-	local part = game.Workspace:FindFirstChild("delete")
-	if part then
-        while true do
-			game.Workspace.delete:Destroy()
-		end
-	end
-end
-
--- Bind "E" key to createPart function
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-	if not gameProcessed and input.KeyCode == Enum.KeyCode.E then
-		createPart()
-	end
-end)
-
--- Button functions
-AddButton.MouseButton1Click:Connect(createPart)
-DeleteButton.MouseButton1Click:Connect(deletePart)
-
-
-
-for _, v in pairs(game:GetService("Workspace")["GlassModel"]:GetDescendants()) do
-    if v:IsA("BasePart") then
-        -- Create a flag to track if the part's color has changed
-        local colorChanged = false  
-
-        v.Touched:Connect(function(hit)
-            local character = hit.Parent
-            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-
-            if humanoid then
-                -- If the player is dead, do nothing
-                if humanoid.Health == 0 then
-                    return
-                end
-                v.Color = Color3.fromRGB(0, 255, 0) 
-                v.Color = Color3.fromRGB(0, 255, 0)  
-                 v.Color = Color3.fromRGB(0, 255, 0)  
-                  v.Color = Color3.fromRGB(0, 255, 0)  
-                   v.Color = Color3.fromRGB(0, 255, 0)  
-                    v.Color = Color3.fromRGB(0, 255, 0)  
-                     v.Color = Color3.fromRGB(0, 255, 0)  
-                      v.Color = Color3.fromRGB(0, 255, 0)  
-                       v.Color = Color3.fromRGB(0, 255, 0)  
-                if not colorChanged then
-                    v.Color = Color3.fromRGB(0, 255, 0)  
-                     v.Color = Color3.fromRGB(0, 255, 0)  
-                      v.Color = Color3.fromRGB(0, 255, 0)  
-                       v.Color = Color3.fromRGB(0, 255, 0)  
-                        v.Color = Color3.fromRGB(0, 255, 0)  
-                         v.Color = Color3.fromRGB(0, 255, 0)  
-                         v.Color = Color3.fromRGB(0, 255, 0)  
-                          v.Color = Color3.fromRGB(0, 255, 0)  
-                           v.Color = Color3.fromRGB(0, 255, 0)  
-                            v.Color = Color3.fromRGB(0, 255, 0)  
-                             v.Color = Color3.fromRGB(0, 255, 0)  
-
-                    colorChanged = true 
+if glassModel and notifEvent then
+    -- Refresh event: Reset all glass colors
+    notifEvent.OnClientEvent:Connect(function(refresh)
+        if refresh == "Refresh" then
+            for _, v in pairs(glassModel:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white
                 end
             end
-        end)
+        end
+    end)
+
+    -- Touched event: Change glass color on touch
+    for _, v in pairs(glassModel:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Touched:Connect(function(hit)
+                local character = hit.Parent
+                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+                if humanoid and humanoid.Health > 0 and notifEvent then
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    if v.Color == Color3.fromRGB(205, 205, 205) then
+                        v.Color = Color3.fromRGB(0, 255, 0)
+                    end
+                end
+            end)
+        end
     end
 end
