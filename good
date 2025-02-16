@@ -22,14 +22,14 @@ if glassModel and notifEvent then
             v.Touched:Connect(function(hit)
                 local character = hit.Parent
                 local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+                local h1, s1, v1 = v.Color:ToHSV()
+                local h2, s2, v2 = Color3.fromRGB(205, 205, 205):ToHSV()
 
-                if humanoid and humanoid.Health > 0 and notifEvent then
+                if humanoid and humanoid.Health > 0 and math.abs(h1 - h2) < 0.01 and math.abs(s1 - s2) < 0.01 and math.abs(v1 - v2) < 0.01 then
                     v.Color = Color3.fromRGB(0, 255, 0)
-                    if v.Color == Color3.fromRGB(205, 205, 205) then
-                        v.Color = Color3.fromRGB(0, 255, 0)
-                    end
                 end
             end)
         end
     end
 end
+print(true)
