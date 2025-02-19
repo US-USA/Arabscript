@@ -1,0 +1,55 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local glassModel = Workspace:FindFirstChild("GlassModel")
+local notifEvent = ReplicatedStorage.Remotes:FindFirstChild("Notif")
+
+if glassModel and notifEvent then
+    -- Refresh event: Reset all glass colors
+    notifEvent.OnClientEvent:Connect(function(refresh)
+        if refresh == "Refresh" then
+            for _, v in pairs(glassModel:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                    v.Color = Color3.fromRGB(205, 205, 205)
+                end
+            end
+        end
+    end)
+
+    -- Touched event: Change glass color on touch
+    for _, v in pairs(glassModel:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Touched:Connect(function(hit)
+                local character = hit.Parent
+                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+                if humanoid and humanoid.Health > 0 and v.Color == Color3.fromRGB(205, 205, 205) then
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                    v.Color = Color3.fromRGB(0, 255, 0)
+                end
+            end)
+        end
+    end
+end
+print(true)
