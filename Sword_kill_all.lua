@@ -781,27 +781,18 @@ end)
 
 ToggleAllBtn.MouseButton1Click:Connect(function()
     playSound("toggle")
-    local newState = true
-    
-    for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= player and not targetList[plr.Name] then
-            newState = true
-            break
-        end
-        newState = false
-    end
-    
+    -- Always set all players to targeted
     for _, plr in pairs(Players:GetPlayers()) do
         if plr ~= player then
-            targetList[plr.Name] = newState
+            targetList[plr.Name] = true -- Always target
             if buttonRefs[plr.Name] then
-                buttonRefs[plr.Name].button.Text = newState and "✅" or "❌"
-                buttonRefs[plr.Name].button.BackgroundColor3 = newState and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
+                buttonRefs[plr.Name].button.Text = "✅" -- Set to targeted icon
+                buttonRefs[plr.Name].button.BackgroundColor3 = Color3.fromRGB(40, 167, 69) -- Set to targeted color
             end
         end
     end
     
-    ToggleAllBtn.Text = newState and "❌ Clear" or "✅ All"
+    ToggleAllBtn.Text = "✅ Target All" -- Keep text consistent
     updateStats()
 end)
 
