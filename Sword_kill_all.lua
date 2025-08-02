@@ -50,6 +50,19 @@ ScreenGui.Name = "EnhancedPlayerTargetingUI"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+-- NEW: Toggle GUI Button (outside main frame)
+local ToggleGUIButton = Instance.new("TextButton", ScreenGui)
+ToggleGUIButton.Size = UDim2.new(0, 80, 0, 30)
+ToggleGUIButton.Position = UDim2.new(0, 10, 0, 10) -- Top-left corner
+ToggleGUIButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+ToggleGUIButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleGUIButton.Font = Enum.Font.SourceSansBold
+ToggleGUIButton.TextSize = 14
+ToggleGUIButton.Text = "Toggle GUI"
+
+local ToggleGUICorner = Instance.new("UICorner", ToggleGUIButton)
+ToggleGUICorner.CornerRadius = UDim.new(0, 4)
+
 --// Main Frame - Mobile Size 240x280 //--
 local Frame = Instance.new("Frame", ScreenGui)
 Frame.Size = UDim2.new(0, 240, 0, 280)
@@ -58,6 +71,7 @@ Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Frame.BorderSizePixel = 0
 Frame.Active = true
 Frame.Draggable = true
+Frame.Visible = true -- Start visible
 
 local FrameCorner = Instance.new("UICorner", Frame)
 FrameCorner.CornerRadius = UDim.new(0, 8)
@@ -78,7 +92,7 @@ local Title = Instance.new("TextLabel", Header)
 Title.Size = UDim2.new(1, -65, 1, 0)
 Title.Position = UDim2.new(0, 8, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "Target System | Sword Kill all"
+Title.Text = "🎯 Target System"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 11
@@ -86,7 +100,7 @@ Title.TextXAlignment = Enum.TextXAlignment.Left
 
 --// Control Buttons - Larger Size //--
 local CloseBtn = Instance.new("TextButton", Header)
-CloseBtn.Size = UDim2.new(0, 28, 0, 22) -- Increased size
+CloseBtn.Size = UDim2.new(0, 28, 0, 22)
 CloseBtn.Position = UDim2.new(1, -32, 0, 5)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(220, 53, 69)
 CloseBtn.Text = "X"
@@ -98,7 +112,7 @@ local CloseBtnCorner = Instance.new("UICorner", CloseBtn)
 CloseBtnCorner.CornerRadius = UDim.new(0, 4)
 
 local MinBtn = Instance.new("TextButton", Header)
-MinBtn.Size = UDim2.new(0, 28, 0, 22) -- Increased size
+MinBtn.Size = UDim2.new(0, 28, 0, 22)
 MinBtn.Position = UDim2.new(1, -65, 0, 5)
 MinBtn.BackgroundColor3 = Color3.fromRGB(108, 117, 125)
 MinBtn.Text = "−"
@@ -162,7 +176,7 @@ SpectateLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 --// Search Bar //--
 local SearchFrame = Instance.new("Frame", Frame)
-SearchFrame.Size = UDim2.new(1, -8, 0, 24) -- Slightly larger
+SearchFrame.Size = UDim2.new(1, -8, 0, 24)
 SearchFrame.Position = UDim2.new(0, 4, 0, 78)
 SearchFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
@@ -205,12 +219,12 @@ UIPadding.PaddingRight = UDim.new(0, 3)
 
 --// Control Buttons - Larger Size //--
 local ButtonFrame = Instance.new("Frame", Frame)
-ButtonFrame.Size = UDim2.new(1, -8, 0, 38) -- Increased height
+ButtonFrame.Size = UDim2.new(1, -8, 0, 38)
 ButtonFrame.Position = UDim2.new(0, 4, 1, -42)
 ButtonFrame.BackgroundTransparency = 1
 
 local ToggleAllBtn = Instance.new("TextButton", ButtonFrame)
-ToggleAllBtn.Size = UDim2.new(0.48, 0, 0, 18) -- Increased height
+ToggleAllBtn.Size = UDim2.new(0.48, 0, 0, 18)
 ToggleAllBtn.Position = UDim2.new(0, 0, 0, 0)
 ToggleAllBtn.BackgroundColor3 = Color3.fromRGB(40, 167, 69)
 ToggleAllBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -222,7 +236,7 @@ local ToggleCorner = Instance.new("UICorner", ToggleAllBtn)
 ToggleCorner.CornerRadius = UDim.new(0, 4)
 
 local ClearAllBtn = Instance.new("TextButton", ButtonFrame)
-ClearAllBtn.Size = UDim2.new(0.48, 0, 0, 18) -- Increased height
+ClearAllBtn.Size = UDim2.new(0.48, 0, 0, 18)
 ClearAllBtn.Position = UDim2.new(0.52, 0, 0, 0)
 ClearAllBtn.BackgroundColor3 = Color3.fromRGB(220, 53, 69)
 ClearAllBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -234,7 +248,7 @@ local ClearCorner = Instance.new("UICorner", ClearAllBtn)
 ClearCorner.CornerRadius = UDim.new(0, 4)
 
 local SettingsBtn = Instance.new("TextButton", ButtonFrame)
-SettingsBtn.Size = UDim2.new(1, 0, 0, 16) -- Increased height
+SettingsBtn.Size = UDim2.new(1, 0, 0, 16)
 SettingsBtn.Position = UDim2.new(0, 0, 0, 21)
 SettingsBtn.BackgroundColor3 = Color3.fromRGB(108, 117, 125)
 SettingsBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -247,7 +261,7 @@ SettingsCorner.CornerRadius = UDim.new(0, 4)
 
 --// Spectate Controls Frame - Larger Buttons //--
 local SpectateFrame = Instance.new("Frame", ScreenGui)
-SpectateFrame.Size = UDim2.new(0, 260, 0, 75) -- Increased height
+SpectateFrame.Size = UDim2.new(0, 260, 0, 75)
 SpectateFrame.Position = UDim2.new(0.5, -130, 0, 200)
 SpectateFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 SpectateFrame.Visible = false
@@ -261,7 +275,7 @@ SpectateStroke.Thickness = 1
 
 -- Close Button - Top Right - Larger Size //--
 local SpectateCloseBtn = Instance.new("TextButton", SpectateFrame)
-SpectateCloseBtn.Size = UDim2.new(0, 26, 0, 22) -- Increased size
+SpectateCloseBtn.Size = UDim2.new(0, 26, 0, 22)
 SpectateCloseBtn.Position = UDim2.new(1, -30, 0, 4)
 SpectateCloseBtn.BackgroundColor3 = Color3.fromRGB(220, 53, 69)
 SpectateCloseBtn.Text = "×"
@@ -314,7 +328,7 @@ SpectatePlayerTool.TextXAlignment = Enum.TextXAlignment.Left
 
 -- Navigation Buttons - Larger Size //--
 local PrevBtn = Instance.new("TextButton", SpectateFrame)
-PrevBtn.Size = UDim2.new(0, 35, 0, 26) -- Increased size
+PrevBtn.Size = UDim2.new(0, 35, 0, 26)
 PrevBtn.Position = UDim2.new(1, -100, 0, 43)
 PrevBtn.BackgroundColor3 = Color3.fromRGB(108, 117, 125)
 PrevBtn.Text = "←"
@@ -326,7 +340,7 @@ local PrevCorner = Instance.new("UICorner", PrevBtn)
 PrevCorner.CornerRadius = UDim.new(0, 4)
 
 local NextBtn = Instance.new("TextButton", SpectateFrame)
-NextBtn.Size = UDim2.new(0, 35, 0, 26) -- Increased size
+NextBtn.Size = UDim2.new(0, 35, 0, 26)
 NextBtn.Position = UDim2.new(1, -35, 0, 43)
 NextBtn.BackgroundColor3 = Color3.fromRGB(108, 117, 125)
 NextBtn.Text = "→"
@@ -497,7 +511,7 @@ end
 --// Player Button Creation - Larger Buttons //--
 local function createPlayerButton(plr)
     local Row = Instance.new("Frame", Scroll)
-    Row.Size = UDim2.new(1, -6, 0, 48) -- Increased height for larger buttons
+    Row.Size = UDim2.new(1, -6, 0, 48)
     Row.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
     Row.Name = plr.Name .. "_Row"
     
@@ -516,7 +530,7 @@ local function createPlayerButton(plr)
     RowPadding.PaddingRight = UDim.new(0, 2)
     
     local Icon = Instance.new("ImageLabel", Row)
-    Icon.Size = UDim2.new(0, 32, 0, 32) -- Larger icon
+    Icon.Size = UDim2.new(0, 32, 0, 32)
     Icon.Position = UDim2.new(0, 3, 0, 3)
     Icon.BackgroundTransparency = 1
     Icon.Image = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. plr.UserId .. "&width=48&height=48&format=png"
@@ -567,7 +581,7 @@ local function createPlayerButton(plr)
     
     -- Larger Target Button
     local TargetBtn = Instance.new("TextButton", Row)
-    TargetBtn.Size = UDim2.new(0, 28, 0, 20) -- Increased size
+    TargetBtn.Size = UDim2.new(0, 28, 0, 20)
     TargetBtn.Position = UDim2.new(1, -55, 0, 3)
     TargetBtn.BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
     TargetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -580,7 +594,7 @@ local function createPlayerButton(plr)
     
     -- Larger Spectate Button
     local SpectateBtn = Instance.new("TextButton", Row)
-    SpectateBtn.Size = UDim2.new(0, 28, 0, 20) -- Increased size
+    SpectateBtn.Size = UDim2.new(0, 28, 0, 20)
     SpectateBtn.Position = UDim2.new(1, -25, 0, 3)
     SpectateBtn.BackgroundColor3 = Color3.fromRGB(100, 149, 237)
     SpectateBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -677,6 +691,7 @@ local function updatePlayerButtons()
             if matchesSearch then
                 table.insert(visiblePlayers, plr)
                 
+                -- Initialize target state if not already set
                 if targetList[plr.Name] == nil then
                     targetList[plr.Name] = settings.autoTargetNewPlayers
                 end
@@ -741,7 +756,14 @@ CloseBtn.MouseButton1Click:Connect(function()
     if spectateMode then
         stopSpectate()
     end
-    ScreenGui:Destroy()
+    Frame.Visible = false -- Hide the main frame instead of destroying ScreenGui
+    
+    -- Reset all targets when GUI is closed
+    for name in pairs(targetList) do
+        targetList[name] = false
+    end
+    updatePlayerButtons() -- Refresh UI to show all untargeted
+    updateStats()
 end)
 
 MinBtn.MouseButton1Click:Connect(function()
@@ -825,6 +847,20 @@ end)
 SpectateCloseBtn.MouseButton1Click:Connect(function()
     playSound("click")
     stopSpectate()
+end)
+
+-- NEW: Toggle GUI Button Event
+ToggleGUIButton.MouseButton1Click:Connect(function()
+    playSound("click")
+    Frame.Visible = not Frame.Visible
+    if Frame.Visible then
+        -- Reset targets when GUI is shown again
+        for name in pairs(targetList) do
+            targetList[name] = false
+        end
+        updatePlayerButtons() -- Re-render player list with reset state
+        updateStats()
+    end
 end)
 
 Players.PlayerAdded:Connect(function(newPlayer)
