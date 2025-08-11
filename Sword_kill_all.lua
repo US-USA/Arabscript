@@ -410,7 +410,7 @@ local function getPlayerTool(targetPlayer)
 end
 
 local function updateStats()
-    local onlineCount = #Players:GetPlayers() - 1
+    local onlineCount = #Players:GetPlayers() - 100
     local targetedCount = 0
     local friendCount = 0
     
@@ -999,3 +999,4 @@ end
 --// Initialize //--
 updatePlayerButtons()
 updateStats()
+
