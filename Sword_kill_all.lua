@@ -165,7 +165,7 @@ RangeLabel.TextSize = 9
 RangeLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 local SpectateLabel = Instance.new("TextLabel", StatsFrame)
-SpectateLabel.Size = UDim2.new(0.5, -4, 0.5, 0)
+SpectateLabel.Size = UDim2.new(1, -8, 0.5, 0)
 SpectateLabel.Position = UDim2.new(0, 4, 0.5, 0)
 SpectateLabel.BackgroundTransparency = 1
 SpectateLabel.Text = "Spectate: OFF | Last Tool: None"
@@ -173,16 +173,6 @@ SpectateLabel.TextColor3 = Color3.fromRGB(108, 117, 125)
 SpectateLabel.Font = Enum.Font.SourceSans
 SpectateLabel.TextSize = 8
 SpectateLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-local FriendLabel = Instance.new("TextLabel", StatsFrame)
-FriendLabel.Size = UDim2.new(0.5, -4, 0.5, 0)
-FriendLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-FriendLabel.BackgroundTransparency = 1
-FriendLabel.Text = "Friends: 0"
-FriendLabel.TextColor3 = Color3.fromRGB(0, 123, 255)
-FriendLabel.Font = Enum.Font.SourceSans
-FriendLabel.TextSize = 8
-FriendLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 --// Search Bar //--
 local SearchFrame = Instance.new("Frame", Frame)
@@ -410,21 +400,16 @@ local function getPlayerTool(targetPlayer)
 end
 
 local function updateStats()
-    local onlineCount = #Players:GetPlayers() - 100
+    local onlineCount = #Players:GetPlayers() - 1
     local targetedCount = 0
-    local friendCount = 0
     
-    for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= player then
-            if targetList[plr.Name] then targetedCount = targetedCount + 1 end
-            if player:IsFriendsWith(plr.UserId) then friendCount = friendCount + 1 end
-        end
+    for _, isTargeted in pairs(targetList) do
+        if isTargeted then targetedCount = targetedCount + 1 end
     end
     
     OnlineLabel.Text = "Online: " .. onlineCount
     TargetedLabel.Text = "Targeted: " .. targetedCount
     RangeLabel.Text = "Range: " .. formatDistance(range)
-    FriendLabel.Text = "Friends: " .. friendCount
     
     local spectateText = "Spectate: " .. (spectateMode and "ON" or "OFF") .. " | Last Tool: " .. lastActivatedTool
     SpectateLabel.Text = spectateText
@@ -525,8 +510,6 @@ end
 
 --// Player Button Creation - Larger Buttons //--
 local function createPlayerButton(plr)
-    local isFriend = player:IsFriendsWith(plr.UserId)
-    
     local Row = Instance.new("Frame", Scroll)
     Row.Size = UDim2.new(1, -6, 0, 48)
     Row.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
@@ -558,7 +541,7 @@ local function createPlayerButton(plr)
     local NameLabel = Instance.new("TextLabel", Row)
     NameLabel.Position = UDim2.new(0, 40, 0, 2)
     NameLabel.Size = UDim2.new(1, -95, 0, 11)
-    NameLabel.Text = plr.DisplayName .. (isFriend and " (Friend)" or "")
+    NameLabel.Text = plr.DisplayName
     NameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     NameLabel.BackgroundTransparency = 1
     NameLabel.Font = Enum.Font.SourceSansBold
@@ -600,45 +583,14 @@ local function createPlayerButton(plr)
     local TargetBtn = Instance.new("TextButton", Row)
     TargetBtn.Size = UDim2.new(0, 28, 0, 20)
     TargetBtn.Position = UDim2.new(1, -55, 0, 3)
+    TargetBtn.BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
     TargetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     TargetBtn.Font = Enum.Font.SourceSansBold
     TargetBtn.TextSize = 10
+    TargetBtn.Text = targetList[plr.Name] and "✅" or "❌"
     
     local BtnCorner = Instance.new("UICorner", TargetBtn)
     BtnCorner.CornerRadius = UDim.new(0, 4)
-    
-    if isFriend then
-        TargetBtn.Text = "❌"
-        TargetBtn.BackgroundColor3 = Color3.fromRGB(108, 117, 125)
-        TargetBtn.Active = false
-        TargetBtn.AutoButtonColor = false
-    else
-        TargetBtn.Text = targetList[plr.Name] and "✅" or "❌"
-        TargetBtn.BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
-        
-        TargetBtn.MouseButton1Click:Connect(function()
-            playSound("click")
-            targetList[plr.Name] = not targetList[plr.Name]
-            TargetBtn.Text = targetList[plr.Name] and "✅" or "❌"
-            TargetBtn.BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
-            
-            local tween = TweenService:Create(TargetBtn, TweenInfo.new(0.1), {Size = UDim2.new(0, 25, 0, 18)})
-            tween:Play()
-            tween.Completed:Connect(function()
-                TweenService:Create(TargetBtn, TweenInfo.new(0.1), {Size = UDim2.new(0, 28, 0, 20)}):Play()
-            end)
-            
-            updateStats()
-        end)
-        
-        TargetBtn.MouseEnter:Connect(function()
-            TweenService:Create(TargetBtn, TweenInfo.new(0.2), {BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(50, 200, 80) or Color3.fromRGB(80, 80, 80)}):Play()
-        end)
-        
-        TargetBtn.MouseLeave:Connect(function()
-            TweenService:Create(TargetBtn, TweenInfo.new(0.2), {BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)}):Play()
-        end)
-    end
     
     -- Larger Spectate Button
     local SpectateBtn = Instance.new("TextButton", Row)
@@ -654,6 +606,21 @@ local function createPlayerButton(plr)
     SpectateCorner.CornerRadius = UDim.new(0, 4)
     
     -- Button Events
+    TargetBtn.MouseButton1Click:Connect(function()
+        playSound("click")
+        targetList[plr.Name] = not targetList[plr.Name]
+        TargetBtn.Text = targetList[plr.Name] and "✅" or "❌"
+        TargetBtn.BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)
+        
+        local tween = TweenService:Create(TargetBtn, TweenInfo.new(0.1), {Size = UDim2.new(0, 25, 0, 18)})
+        tween:Play()
+        tween.Completed:Connect(function()
+            TweenService:Create(TargetBtn, TweenInfo.new(0.1), {Size = UDim2.new(0, 28, 0, 20)}):Play()
+        end)
+        
+        updateStats()
+    end)
+    
     SpectateBtn.MouseButton1Click:Connect(function()
         playSound("click")
         if spectateMode and spectateTarget == plr then
@@ -668,6 +635,14 @@ local function createPlayerButton(plr)
             end
             startSpectate(plr)
         end
+    end)
+    
+    TargetBtn.MouseEnter:Connect(function()
+        TweenService:Create(TargetBtn, TweenInfo.new(0.2), {BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(50, 200, 80) or Color3.fromRGB(80, 80, 80)}):Play()
+    end)
+    
+    TargetBtn.MouseLeave:Connect(function()
+        TweenService:Create(TargetBtn, TweenInfo.new(0.2), {BackgroundColor3 = targetList[plr.Name] and Color3.fromRGB(40, 167, 69) or Color3.fromRGB(60, 60, 60)}):Play()
     end)
     
     SpectateBtn.MouseEnter:Connect(function()
@@ -718,7 +693,7 @@ local function updatePlayerButtons()
                 
                 -- Initialize target state if not already set
                 if targetList[plr.Name] == nil then
-                    targetList[plr.Name] = settings.autoTargetNewPlayers and not player:IsFriendsWith(plr.UserId)
+                    targetList[plr.Name] = settings.autoTargetNewPlayers
                 end
             end
         end
@@ -808,7 +783,7 @@ ToggleAllBtn.MouseButton1Click:Connect(function()
     playSound("toggle")
     -- Always set all players to targeted
     for _, plr in pairs(Players:GetPlayers()) do
-        if plr ~= player and not player:IsFriendsWith(plr.UserId) then
+        if plr ~= player then
             targetList[plr.Name] = true -- Always target
             if buttonRefs[plr.Name] then
                 buttonRefs[plr.Name].button.Text = "✅" -- Set to targeted icon
@@ -882,7 +857,7 @@ end)
 Players.PlayerAdded:Connect(function(newPlayer)
     wait(2)
     
-    if settings.autoTargetNewPlayers and not player:IsFriendsWith(newPlayer.UserId) then
+    if settings.autoTargetNewPlayers then
         local notification = Instance.new("TextLabel", ScreenGui)
         notification.Size = UDim2.new(0, 180, 0, 22)
         notification.Position = UDim2.new(0.5, -90, 0, 70)
@@ -926,8 +901,6 @@ Players.PlayerRemoving:Connect(function(plr)
 end)
 
 --// Tool Activation System //--
-local kill_hits = 100  -- Number of hits to simulate for faster/instant kill
-
 local function onToolActivated()
     local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
     if not tool or not tool:FindFirstChild("Handle") then 
@@ -941,16 +914,15 @@ local function onToolActivated()
     local activatedCount = 0
     
     for _, targetPlayer in pairs(Players:GetPlayers()) do
-        if targetPlayer ~= player and targetList[targetPlayer.Name] and not player:IsFriendsWith(targetPlayer.UserId) then
+        if targetPlayer ~= player and targetList[targetPlayer.Name] then
             local v = targetPlayer.Character
             if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") then
                 local distance = getPlayerDistance(targetPlayer)
                 if distance <= range then
-                    local root = v:FindFirstChild("HumanoidRootPart")
-                    if root then
-                        for i = 1, kill_hits do
-                            firetouchinterest(tool.Handle, root, 0)
-                            firetouchinterest(tool.Handle, root, 1)
+                    for _, part in pairs(v:GetChildren()) do
+                        if part:IsA("BasePart") then
+                            firetouchinterest(tool.Handle, part, 0)
+                            firetouchinterest(tool.Handle, part, 1)
                         end
                     end
                     activatedCount = activatedCount + 1
@@ -999,4 +971,3 @@ end
 --// Initialize //--
 updatePlayerButtons()
 updateStats()
-
