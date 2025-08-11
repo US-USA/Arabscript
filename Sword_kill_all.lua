@@ -7,7 +7,7 @@ local Workspace = game:GetService("Workspace")
 
 --// Settings //--
 local player = Players.LocalPlayer
-local range = math.huge
+local range = 5000
 local settings = {
     autoUpdate = true,
     showDistance = true,
@@ -971,3 +971,4 @@ end
 --// Initialize //--
 updatePlayerButtons()
 updateStats()
+
