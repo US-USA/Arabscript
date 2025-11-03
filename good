@@ -33,3 +33,47 @@ if glassModel and notifEvent then
     end
 end
 print(true)
+---------- NEW!!!!!!!! 
+
+
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local glassModel = Workspace:FindFirstChild("GlassModel")
+local notifEvent = ReplicatedStorage.Remotes:FindFirstChild("Notif")
+
+-- Table to save glass state
+local save = {}
+
+if glassModel and notifEvent then
+
+    -- Refresh event: Reset only glass that are not saved
+    notifEvent.OnClientEvent:Connect(function(refresh)
+        if refresh == "Refresh" then
+            for _, v in pairs(glassModel:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    if not save[v] then
+                        v.Color = Color3.fromRGB(205, 205, 205) -- Reset to white only if not saved
+                    end
+                end
+            end
+        end
+    end)
+
+    -- Touched event: Change glass color on touch if not already saved
+    for _, v in pairs(glassModel:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Touched:Connect(function(hit)
+                local character = hit.Parent
+                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+                -- Only change if humanoid exists and glass not saved
+                if humanoid and humanoid.Health > 0 and not save[v] then
+                    v.Color = Color3.fromRGB(255, 0, 0) -- Mark red as bought/touched
+                    save[v] = true -- Save state so it won’t be reset
+                end
+            end)
+        end
+    end
+end
